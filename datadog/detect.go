@@ -2,6 +2,8 @@ package datadog
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/buildpacks/libcnb"
 	"github.com/paketo-buildpacks/libpak"
@@ -24,13 +26,13 @@ func (d Detect) Detect(context libcnb.DetectContext) (libcnb.DetectResult, error
 	}
 
 	// Detect Vite Configuration Files
-	viteConfigJS := context.Application.Path.Join("vite.config.js")
-	viteConfigTS := context.Application.Path.Join("vite.config.ts")
+	viteConfigJS := filepath.Join(context.Application.Path, "vite.config.js")
+	viteConfigTS := filepath.Join(context.Application.Path, "vite.config.ts")
 
 	viteDetected := false
-	if _, err := context.Application.Path.Stat(viteConfigJS); err == nil {
+	if _, err := os.Stat(viteConfigJS); err == nil {
 		viteDetected = true
-	} else if _, err := context.Application.Path.Stat(viteConfigTS); err == nil {
+	} else if _, err := os.Stat(viteConfigTS); err == nil {
 		viteDetected = true
 	}
 
