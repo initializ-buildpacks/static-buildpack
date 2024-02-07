@@ -1,0 +1,89 @@
+# Copyright 2018-2022 the original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+api = "0.7"
+
+[buildpack]
+  description = "A Cloud Native Buildpack that contributes and configures the Datadog Agent"
+  homepage = "https://github.com/initializ-buildpacks/static-buildpack"
+  id = "initializ-buildpacks/datadog"
+  keywords = ["java"]
+  name = "Initializ Buildpack for Datadog"
+  sbom-formats = ["application/vnd.syft+json", "application/vnd.cyclonedx+json"]
+  version = "{{.version}}"
+
+  [[buildpack.licenses]]
+    type = "Apache-2.0"
+    uri = "https://github.com/paketo-buildpacks/maven/blob/main/LICENSE"
+
+[metadata]
+  include-files = ["LICENSE", "README.md", "bin/build", "bin/detect", "bin/main", "bin/helper", "buildpack.toml"]
+  pre-package = "scripts/build.sh"
+
+  [[metadata.configurations]]
+    build = true
+    default = "false"
+    description = "whether to contribute the Datadog trace agent"
+    name = "BP_DATADOG_ENABLED"
+
+  [[metadata.configurations]]
+    default = "false"
+    description = "whether to disable the Datadog trace agent (non native-image Java applications only!)"
+    launch = true
+    name = "BPL_DATADOG_DISABLED"
+
+  [[metadata.dependencies]]
+    cpes = ["cpe:2.3:a:datadoghq:java-agent:1.29.0:*:*:*:*:*:*:*"]
+    id = "datadog-agent-java"
+    name = "Datadog Java Agent"
+    purl = "pkg:generic/datadog-java-agent@1.29.0?arch=amd64"
+    sha256 = "982e4db37d5cb4f7d94c7fc1bc023efd96844a12c65a4d1ea04e566edd6bcdbc"
+    source = "https://repo1.maven.org/maven2/com/datadoghq/dd-java-agent/1.29.0/dd-java-agent-1.29.0-sources.jar"
+    source-sha256 = "e6b04de5f069889099c945070b7b72542acc22b2b2e05f1ed12a0982ffd8fd04"
+    stacks = ["io.buildpacks.stacks.bionic", "io.paketo.stacks.tiny", "*"]
+    uri = "https://repo1.maven.org/maven2/com/datadoghq/dd-java-agent/1.29.0/dd-java-agent-1.29.0.jar"
+    version = "1.29.0"
+
+    [[metadata.dependencies.licenses]]
+      type = "Apache-2.0"
+      uri = "https://github.com/DataDog/dd-trace-java/blob/master/LICENSE"
+
+  [[metadata.dependencies]]
+    cpes = ["cpe:2.3:a:datadoghq:nodejs-agent:5.2.0:*:*:*:*:*:*:*"]
+    id = "datadog-agent-nodejs"
+    name = "Datadog NodeJS Agent"
+    purl = "pkg:generic/datadog-nodejs-agent@5.2.0?arch=amd64"
+    sha256 = "7e1468420cc8bd3a19232d0b0fcf32bab43ddcb78b81314fb2bc5d8546ae97f2"
+    source = "https://registry.npmjs.org/dd-trace/-/dd-trace-5.2.0.tgz"
+    source-sha256 = "7e1468420cc8bd3a19232d0b0fcf32bab43ddcb78b81314fb2bc5d8546ae97f2"
+    stacks = ["io.buildpacks.stacks.bionic", "io.paketo.stacks.tiny", "*"]
+    uri = "https://registry.npmjs.org/dd-trace/-/dd-trace-5.2.0.tgz"
+    version = "5.2.0"
+
+    [[metadata.dependencies.licenses]]
+      type = "BSD-3-Clause"
+      uri = "https://github.com/DataDog/dd-trace-js/blob/master/LICENSE.BSD3"
+
+    [[metadata.dependencies.licenses]]
+      type = "Apache-2.0"
+      uri = "https://github.com/DataDog/dd-trace-js/blob/master/LICENSE.Apache"
+
+[[stacks]]
+  id = "io.buildpacks.stacks.bionic"
+
+[[stacks]]
+  id = "io.paketo.stacks.tiny"
+
+[[stacks]]
+  id = "*"
