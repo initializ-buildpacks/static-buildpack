@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-
+    "github.com/paketo-buildpacks/libpak/bard"
 	"github.com/buildpacks/libcnb"
 )
 
