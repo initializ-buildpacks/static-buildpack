@@ -18,8 +18,8 @@
  func main() {
 	 logger := bard.NewLogger(os.Stdout)
 	 libpak.Main(
-		 static-buildpack.Detect{Logger: logger},
-		 static-buildpack.Build{Logger: logger},
+		 static.Detect{Logger: logger},
+		 static.Build{Logger: logger},
 	 )
  }
  
