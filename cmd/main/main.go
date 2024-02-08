@@ -10,7 +10,7 @@
  import (
 	 "os"
  
-	 "github.com/initializ-buildpacks/static-buildpack"
+	 "github.com/initializ-buildpacks/static-buildpack/static"
 	 "github.com/paketo-buildpacks/libpak"
 	 "github.com/paketo-buildpacks/libpak/bard"
  )

@@ -1,4 +1,4 @@
-package static-buildpack
+package static
 
 import (
 	"bytes"

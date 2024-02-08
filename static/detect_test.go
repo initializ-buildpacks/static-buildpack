@@ -1,11 +1,11 @@
-package static-buildpack
+package static
 
 import (
 	"os"
 	"testing"
 
 	"github.com/buildpacks/libcnb"
-	"github.com/initializ-buildpacks/static-buildpack"
+	"github.com/initializ-buildpacks/static-buildpack/static"
 	. "github.com/onsi/gomega"
 	"github.com/sclevine/spec"
 )

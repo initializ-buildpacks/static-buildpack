@@ -3,6 +3,7 @@ module github.com/initializ-buildpacks/static-buildpack
 go 1.20
 
 require (
+	github.com/buildpacks/libcnb v1.30.1
 	github.com/heroku/color v0.0.6
 	github.com/initializ-buildpacks/npm-install v0.0.0-20240112193258-223f48095c5d
 	github.com/onsi/gomega v1.31.1
@@ -32,7 +33,6 @@ require (
 	github.com/apex/log v1.9.0 // indirect
 	github.com/becheran/wildmatch-go v1.0.0 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.6.1 // indirect
-	github.com/buildpacks/libcnb v1.30.1 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/containerd/containerd v1.7.10 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.15.1 // indirect
