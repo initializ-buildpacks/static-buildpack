@@ -1,3 +1,5 @@
+package static-buildpack
+
 import (
 	"os"
 	"testing"
