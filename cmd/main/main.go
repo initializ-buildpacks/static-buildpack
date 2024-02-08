@@ -10,7 +10,7 @@ package main
 import (
 	"os"
 
-	"github.com/initializ-buildpacks/static-buildpack/datadog"
+	"github.com/initializ-buildpacks/static-buildpack"
 	"github.com/paketo-buildpacks/libpak"
 	"github.com/paketo-buildpacks/libpak/bard"
 )

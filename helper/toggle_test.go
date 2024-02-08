@@ -1,6 +1,7 @@
 package helper_test
 
 import (
+	"io/ioutil"
 	"os"
 	"testing"
 
@@ -17,56 +18,65 @@ func testToggle(t *testing.T, context spec.G, it spec.S) {
 		toggle = helper.Toggle{}
 	)
 
-	it.Before(func() {
-		Expect(os.Setenv("BPL_DATADOG_DISABLED", "true")).To(Succeed())
+	it("does not install npm dependency if Vite is not detected", func() {
+		// Create a temporary package.json file without Vite
+		tmpFile, err := ioutil.TempFile("", "package.json")
+		Expect(err).ToNot(HaveOccurred())
+		defer os.Remove(tmpFile.Name())
+
+		err = ioutil.WriteFile(tmpFile.Name(), []byte(`{"name": "test"}`), 0644)
+		Expect(err).ToNot(HaveOccurred())
+
+		// Set the current directory to the directory containing the temporary package.json file
+		err = os.Chdir(tmpFile.Name())
+		Expect(err).ToNot(HaveOccurred())
+
+		// Execute the toggle
+		_, err = toggle.Execute()
+		Expect(err).ToNot(HaveOccurred())
 	})
 
-	it.After(func() {
-		Expect(os.Unsetenv("BPL_DATADOG_DISABLED")).To(Succeed())
+	it("installs 'serve' npm dependency if Vite is detected", func() {
+		// Create a temporary package.json file with Vite
+		tmpFile, err := ioutil.TempFile("", "package.json")
+		Expect(err).ToNot(HaveOccurred())
+		defer os.Remove(tmpFile.Name())
+
+		err = ioutil.WriteFile(tmpFile.Name(), []byte(`{"name": "test", "dependencies": {"vite": "^2.0.0"}}`), 0644)
+		Expect(err).ToNot(HaveOccurred())
+
+		// Set the current directory to the directory containing the temporary package.json file
+		err = os.Chdir(tmpFile.Name())
+		Expect(err).ToNot(HaveOccurred())
+
+		// Execute the toggle
+		_, err = toggle.Execute()
+		Expect(err).ToNot(HaveOccurred())
+
+		// Verify that the 'serve' npm dependency is installed in node_modules
+		_, err = os.Stat("node_modules/serve")
+		Expect(err).ToNot(HaveOccurred(), "'serve' npm dependency not found in node_modules directory")
 	})
 
-	it("returns if $BPL_DATADOG_DISABLED is not set", func() {
-		Expect(toggle.Execute()).To(BeNil())
-	})
+	it("does not install 'serve' npm dependency if Vite is not detected", func() {
+		// Create a temporary package.json file without Vite
+		tmpFile, err := ioutil.TempFile("", "package.json")
+		Expect(err).ToNot(HaveOccurred())
+		defer os.Remove(tmpFile.Name())
 
-	context("$BPL_DATADOG_DISABLED", func() {
-		it.Before(func() {
-			Expect(os.Unsetenv("BPL_DATADOG_DISABLED")).To(Succeed())
-		})
+		err = ioutil.WriteFile(tmpFile.Name(), []byte(`{"name": "test", "dependencies": {"another_dependency": "^1.0.0"}}`), 0644)
+		Expect(err).ToNot(HaveOccurred())
 
-		it.After(func() {
-			Expect(os.Unsetenv("BPL_DATADOG_DISABLED")).To(Succeed())
-		})
+		// Set the current directory to the directory containing the temporary package.json file
+		err = os.Chdir(tmpFile.Name())
+		Expect(err).ToNot(HaveOccurred())
 
-		context("$JAVA_TOOL_OPTIONS", func() {
-			it.Before(func() {
-				Expect(os.Setenv("JAVA_TOOL_OPTIONS", "test-java-tool-options")).To(Succeed())
-			})
+		// Execute the toggle
+		_, err = toggle.Execute()
+		Expect(err).ToNot(HaveOccurred())
 
-			it.After(func() {
-				Expect(os.Unsetenv("JAVA_TOOL_OPTIONS")).To(Succeed())
-			})
-
-			it("returns error if $BPI_DATADOG_AGENT_PATH is not set", func() {
-				_, err := toggle.Execute()
-				Expect(err).To(MatchError("$BPI_DATADOG_AGENT_PATH must be set"))
-			})
-
-			context("$BPI_DATADOG_AGENT_PATH", func() {
-				it.Before(func() {
-					Expect(os.Setenv("BPI_DATADOG_AGENT_PATH", "/mock/path/to/agent.jar")).To(Succeed())
-				})
-
-				it.After(func() {
-					Expect(os.Unsetenv("BPI_DATADOG_AGENT_PATH")).To(Succeed())
-				})
-
-				it("contributes configuration", func() {
-					Expect(toggle.Execute()).To(Equal(map[string]string{
-						"JAVA_TOOL_OPTIONS": "test-java-tool-options -javaagent:/mock/path/to/agent.jar",
-					}))
-				})
-			})
-		})
+		// Verify that the 'serve' npm dependency is not installed in node_modules
+		_, err = os.Stat("node_modules/serve")
+		Expect(os.IsNotExist(err)).To(BeTrue(), "'serve' npm dependency found in node_modules directory")
 	})
 }
