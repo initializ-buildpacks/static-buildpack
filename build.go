@@ -1,6 +1,7 @@
 package datadog
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
