@@ -1,5 +1,3 @@
-package datadog
-
 import (
 	"bytes"
 	"fmt"
@@ -8,7 +6,6 @@ import (
 	"path/filepath"
 
 	"github.com/buildpacks/libcnb"
-	"github.com/paketo-buildpacks/libpak/bard"
 )
 
 type Build struct {

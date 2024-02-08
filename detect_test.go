@@ -1,14 +1,11 @@
-package datadog_test
-
 import (
 	"os"
 	"testing"
 
 	"github.com/buildpacks/libcnb"
+	"github.com/initializ-buildpacks/static-buildpack"
 	. "github.com/onsi/gomega"
 	"github.com/sclevine/spec"
-
-	"github.com/initializ-buildpacks/static-buildpack/datadog"
 )
 
 func testDetect(t *testing.T, context spec.G, it spec.S) {
@@ -16,7 +13,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 		Expect = NewWithT(t).Expect
 
 		ctx    libcnb.DetectContext
-		detect datadog.Detect
+		detect staticbuildpack.Detect
 	)
 
 	context("Vite is present in package.json", func() {

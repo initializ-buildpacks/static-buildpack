@@ -1,5 +1,3 @@
-package datadog
-
 import (
 	"encoding/json"
 	"fmt"
