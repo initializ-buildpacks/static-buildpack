@@ -5,20 +5,21 @@
  * strictly prohibited without the express written consent of VMware, Inc.
  */
 
-package main
+ package main
 
-import (
-	"os"
-
-	"github.com/initializ-buildpacks/static-buildpack"
-	"github.com/paketo-buildpacks/libpak"
-	"github.com/paketo-buildpacks/libpak/bard"
-)
-
-func main() {
-	logger := bard.NewLogger(os.Stdout)
-	libpak.Main(
-		datadog.Detect{Logger: logger},
-		datadog.Build{Logger: logger},
-	)
-}
+ import (
+	 "os"
+ 
+	 "github.com/initializ-buildpacks/static-buildpack"
+	 "github.com/paketo-buildpacks/libpak"
+	 "github.com/paketo-buildpacks/libpak/bard"
+ )
+ 
+ func main() {
+	 logger := bard.NewLogger(os.Stdout)
+	 libpak.Main(
+		 static-buildpack.Detect{Logger: logger},
+		 static-buildpack.Build{Logger: logger},
+	 )
+ }
+ 

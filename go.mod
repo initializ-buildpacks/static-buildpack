@@ -1,4 +1,5 @@
 module github.com/initializ-buildpacks/static-buildpack
+module github.com/initializ-buildpacks/npm-install
 
 go 1.20
 
